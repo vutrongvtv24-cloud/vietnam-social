@@ -100,30 +100,37 @@ export function SidebarRight() {
                         <div className="text-xs text-muted-foreground text-center">Loading rankings...</div>
                     ) : leaders.length > 0 ? (
                         leaders.map((leader, i) => (
-                            <Link
+                            <div
                                 key={leader.id}
-                                href={leader.id === authUser?.id ? `/profile/${leader.id}` : `/messages?userId=${leader.id}`}
-                                className="flex items-center gap-3 text-sm group cursor-pointer hover:bg-secondary/50 p-2 rounded-md -mx-2 transition-colors"
-                                title={leader.id === authUser?.id ? 'View Profile' : `Chat with ${leader.full_name}`}
+                                className="flex items-center gap-3 text-sm group p-2 rounded-md -mx-2 hover:bg-secondary/50 transition-colors"
                             >
                                 <div className={`font-bold w-5 text-center ${i === 0 ? 'text-yellow-500' : i === 1 ? 'text-gray-400' : i === 2 ? 'text-amber-700' : 'text-muted-foreground'}`}>
                                     {i + 1}
                                 </div>
-                                <Avatar className="h-8 w-8">
-                                    <AvatarImage src={leader.avatar_url} />
-                                    <AvatarFallback>{leader.full_name?.[0] || "U"}</AvatarFallback>
-                                </Avatar>
-                                <div className="flex-1 truncate font-medium">
-                                    {leader.full_name}
-                                    {leader.id === authUser?.id && <span className="ml-1 text-[10px] text-primary">(You)</span>}
-                                </div>
-                                <div className="flex items-center gap-2">
-                                    <span className="font-bold text-primary text-xs">{leader.xp + (leader.level * 100)} pts</span>
+
+                                <Link href={`/profile/${leader.id}`} className="flex items-center gap-3 flex-1 min-w-0 cursor-pointer">
+                                    <Avatar className="h-8 w-8 shrink-0">
+                                        <AvatarImage src={leader.avatar_url} />
+                                        <AvatarFallback>{leader.full_name?.[0] || "U"}</AvatarFallback>
+                                    </Avatar>
+                                    <div className="flex-1 truncate font-medium hover:underline decoration-primary">
+                                        {leader.full_name}
+                                        {leader.id === authUser?.id && <span className="ml-1 text-[10px] text-primary">(You)</span>}
+                                    </div>
+                                </Link>
+
+                                <div className="flex items-center gap-2 shrink-0">
+                                    <span className="font-bold text-primary text-xs hidden sm:inline-block">{leader.xp + (leader.level * 100)} pts</span>
+
                                     {leader.id !== authUser?.id && (
-                                        <MessageCircle className="h-4 w-4 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
+                                        <Link href={`/messages?userId=${leader.id}`} title={`Message ${leader.full_name}`}>
+                                            <Button variant="ghost" size="icon" className="h-7 w-7 opacity-70 hover:opacity-100 hover:bg-primary/20 hover:text-primary">
+                                                <MessageCircle className="h-4 w-4" />
+                                            </Button>
+                                        </Link>
                                     )}
                                 </div>
-                            </Link>
+                            </div>
                         ))
                     ) : (
                         <div className="text-xs text-muted-foreground text-center">Be the first to join the leaderboard!</div>
