@@ -4,7 +4,7 @@ import { useState, useRef } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Image as ImageIcon, X, Smile, MapPin, Video } from "lucide-react";
+import { Image as ImageIcon, X, Smile, Globe, Video } from "lucide-react";
 import { compressImage } from "@/lib/imageUtils";
 import { useLanguage } from "@/context/LanguageContext";
 import { MarkdownEditor } from "@/components/ui/markdown-editor";
@@ -16,6 +16,13 @@ import {
     DialogFooter,
     DialogTrigger,
 } from "@/components/ui/dialog";
+import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+} from "@/components/ui/popover";
+import EmojiPicker, { Theme, EmojiClickData } from 'emoji-picker-react';
+import { useTheme } from "next-themes";
 
 interface CreatePostProps {
     onPost: (content: string, image?: File, title?: string, minLevel?: number) => Promise<void>;
@@ -31,6 +38,7 @@ interface CreatePostProps {
 
 export function CreatePost({ onPost, user, placeholder, disabled = false, maxLevel = 0 }: CreatePostProps) {
     const { t, language } = useLanguage();
+    const { theme } = useTheme();
     const [isOpen, setIsOpen] = useState(false);
 
     // Form States
@@ -91,6 +99,10 @@ export function CreatePost({ onPost, user, placeholder, disabled = false, maxLev
         }
     };
 
+    const onEmojiClick = (emojiData: EmojiClickData) => {
+        setContent(prev => prev + emojiData.emoji);
+    };
+
     if (!user) return null;
 
     // Helper to trigger file input
@@ -127,7 +139,11 @@ export function CreatePost({ onPost, user, placeholder, disabled = false, maxLev
                                     <Video className="h-5 w-5 text-red-500" />
                                     <span className="text-xs sm:text-sm font-medium">Live Video</span>
                                 </Button>
-                                <Button variant="ghost" className="flex-1 gap-2 text-muted-foreground hover:bg-transparent hover:text-foreground">
+                                <Button
+                                    variant="ghost"
+                                    className="flex-1 gap-2 text-muted-foreground hover:bg-transparent hover:text-foreground"
+                                    onClick={(e) => { e.stopPropagation(); setIsOpen(true); }}
+                                >
                                     <Smile className="h-5 w-5 text-yellow-500" />
                                     <span className="text-xs sm:text-sm font-medium">{language === 'vi' ? 'Cảm xúc' : 'Feeling'}</span>
                                 </Button>
@@ -142,7 +158,6 @@ export function CreatePost({ onPost, user, placeholder, disabled = false, maxLev
                         <DialogTitle className="text-center text-lg font-bold flex-1">
                             {language === 'vi' ? 'Tạo bài viết' : 'Create Post'}
                         </DialogTitle>
-                        {/* Close button is auto-rendered by DialogContent, but we can customize if needed */}
                     </DialogHeader>
 
                     <div className="flex-1 overflow-y-auto p-4 custom-scrollbar">
@@ -155,7 +170,7 @@ export function CreatePost({ onPost, user, placeholder, disabled = false, maxLev
                             <div>
                                 <div className="font-semibold text-sm">{user.name}</div>
                                 <Button variant="secondary" size="sm" className="h-6 text-[10px] px-2 mt-0.5 font-normal bg-muted">
-                                    <MapPin className="h-3 w-3 mr-1" />
+                                    <Globe className="h-3 w-3 mr-1" />
                                     Public
                                 </Button>
                             </div>
@@ -209,12 +224,23 @@ export function CreatePost({ onPost, user, placeholder, disabled = false, maxLev
                                 >
                                     <ImageIcon className="h-5 w-5" />
                                 </Button>
-                                <Button variant="ghost" size="icon" className="h-9 w-9 text-blue-500 rounded-full hover:bg-blue-50 dark:hover:bg-blue-900/20">
-                                    <MapPin className="h-5 w-5" />
-                                </Button>
-                                <Button variant="ghost" size="icon" className="h-9 w-9 text-yellow-500 rounded-full hover:bg-yellow-50 dark:hover:bg-yellow-900/20">
-                                    <Smile className="h-5 w-5" />
-                                </Button>
+
+                                {/* Emoji Picker Popover */}
+                                <Popover>
+                                    <PopoverTrigger asChild>
+                                        <Button variant="ghost" size="icon" className="h-9 w-9 text-yellow-500 rounded-full hover:bg-yellow-50 dark:hover:bg-yellow-900/20" title="Feeling/Activity">
+                                            <Smile className="h-5 w-5" />
+                                        </Button>
+                                    </PopoverTrigger>
+                                    <PopoverContent className="w-full p-0 border-none" align="end">
+                                        <EmojiPicker
+                                            onEmojiClick={onEmojiClick}
+                                            theme={theme === 'dark' ? Theme.DARK : Theme.LIGHT}
+                                            width={320}
+                                            height={400}
+                                        />
+                                    </PopoverContent>
+                                </Popover>
 
                                 {/* Min Level Setting (Compact) */}
                                 <div className="flex items-center gap-1 ml-2 pl-2 border-l">
