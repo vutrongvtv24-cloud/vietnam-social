@@ -124,7 +124,14 @@ export function PostCard({ post, onToggleLike, onDeletePost, onBlockUser }: Post
 
     // Admin: Delete post
     const handleDeletePost = async () => {
-        if (!isAdmin && !isAuthor) return;
+        console.log('[Delete Post] Attempting to delete post:', post.id);
+        console.log('[Delete Post] isAdmin:', isAdmin, 'isAuthor:', isAuthor);
+        console.log('[Delete Post] user email:', user?.email);
+
+        if (!isAdmin && !isAuthor) {
+            toast.error("Bạn không có quyền xóa bài viết này");
+            return;
+        }
 
         if (onDeletePost) {
             await onDeletePost(post.id);
@@ -133,16 +140,19 @@ export function PostCard({ post, onToggleLike, onDeletePost, onBlockUser }: Post
         }
 
         // Fallback: delete directly
-        const { error } = await supabase
+        const { error, status, statusText } = await supabase
             .from('posts')
             .delete()
             .eq('id', post.id);
 
+        console.log('[Delete Post] Response:', { error, status, statusText });
+
         if (!error) {
             setIsDeleted(true);
-            toast.success("Post deleted successfully!");
+            toast.success("Đã xóa bài viết thành công!");
         } else {
-            toast.error("Failed to delete post");
+            console.error('[Delete Post] Error:', error);
+            toast.error(`Lỗi xóa bài: ${error.message || 'Không xác định'}`);
         }
     };
 
@@ -383,7 +393,10 @@ export function PostCard({ post, onToggleLike, onDeletePost, onBlockUser }: Post
                         {/* Author or Admin can delete */}
                         {(isAuthor || isAdmin) && (
                             <DropdownMenuItem
-                                onClick={handleDeletePost}
+                                onSelect={(e) => {
+                                    e.preventDefault();
+                                    handleDeletePost();
+                                }}
                                 className="text-red-600 focus:text-red-600 focus:bg-red-50 cursor-pointer"
                             >
                                 <Trash2 className="h-4 w-4 mr-2" />
@@ -396,7 +409,10 @@ export function PostCard({ post, onToggleLike, onDeletePost, onBlockUser }: Post
                             <>
                                 <DropdownMenuSeparator />
                                 <DropdownMenuItem
-                                    onClick={handleBlockUser}
+                                    onSelect={(e) => {
+                                        e.preventDefault();
+                                        handleBlockUser();
+                                    }}
                                     className="text-orange-600 focus:text-orange-600 focus:bg-orange-50 cursor-pointer"
                                 >
                                     <Ban className="h-4 w-4 mr-2" />
@@ -410,7 +426,7 @@ export function PostCard({ post, onToggleLike, onDeletePost, onBlockUser }: Post
                             <>
                                 <DropdownMenuSeparator />
                                 <DropdownMenuItem
-                                    onClick={() => toast.info("Đã ghi nhận báo cáo của bạn")}
+                                    onSelect={() => toast.info("Đã ghi nhận báo cáo của bạn")}
                                     className="cursor-pointer"
                                 >
                                     <Flag className="h-4 w-4 mr-2" />

@@ -31,7 +31,7 @@
             border-radius: 8px;
             background: #fff;
         }
-        
+
         /* Mermaid styling fix */
         .mermaid {
             display: flex;
@@ -61,8 +61,8 @@
 # 📘 Tài Liệu Kỹ Thuật: Vietnam Social
 
 > **Dự án:** Vietnam Social (Mạng xã hội cho Builders)  
-> **Phiên bản:** 2.0.0 (Post Approval System & Courses)  
-> **Cập nhật lần cuối:** 20/01/2026
+> **Phiên bản:** 2.1.0 (Admin Power Update)  
+> **Cập nhật lần cuối:** 21/01/2026
 
 ---
 
@@ -85,6 +85,7 @@ graph TD
     G[Approval System]
     H[Gamification]
     I[Courses]
+    J[Admin Dashboard]
     end
 ```
 
@@ -107,6 +108,7 @@ stateDiagram-v2
     [*] --> Pending: User đăng bài
     Pending --> Approved: Admin Approve
     Pending --> Rejected: Admin Reject
+    Pending --> Deleted: Admin/Author Delete
     Pending --> Pending: User Votes
     
     state "Kiểm tra Vote (>50%)" as CheckVote
@@ -116,21 +118,28 @@ stateDiagram-v2
     
     Approved --> [*]: Hiển thị Public
     Rejected --> [*]: Ẩn bài viết
+    Deleted --> [*]: Xóa vĩnh viễn
 ```
 
-### 🎮 B. Gamification (Tính Điểm & Level)
+### 👮 B. Admin Privileges (Quyền Quản Trị)
+
+Người quản trị hệ thống (cả Global Admin và Community Admin) có các quyền đặc biệt để duy trì trật tự cộng đồng:
+
+*   **Xóa bài viết:** Admin có thể xóa bất kỳ bài viết nào vi phạm quy tắc.
+*   **Block User:** Admin có thể block người dùng, ngăn họ đăng bài hoặc tham gia cộng đồng.
+*   **Quản lý thành viên:** Admin có thể Duyệt (Approve), Từ chối (Reject) hoặc Block thành viên trong các Community Group.
+
+### 🎮 C. Gamification (Tính Điểm & Level)
 
 Người dùng được khuyến khích tương tác thông qua hệ thống điểm kinh nghiệm (XP) và Cấp độ (Level).
 
 *   **Logic:** XP tích lũy từ các hành động (Đăng bài = 10xp, Like = 2xp...).
 *   **Hiển thị:** Level hiện tại hiển thị cạnh tên người dùng (VD: `Level 5 Builder`).
-*   **Mục đích:** Level cao có thể mở khóa các tính năng đặc biệt (ví dụ: truy cập Course nâng cao - *Future Feature*).
+*   **Mục đích:** Level cao có thể mở khóa các tính năng đặc biệt (ví dụ: truy cập Course nâng cao).
 
-### 💬 C. Bình Luận Realtime
+### 💬 D. Bình Luận Realtime
 
 Hệ thống sử dụng **Supabase Realtime** để cập nhật bình luận ngay lập tức mà không cần F5 trang web.
-*   Khi User A bình luận -> Server bắn sự kiện `INSERT`.
-*   User B (đang xem bài) -> Nhận sự kiện -> Hiển thị comment mới ngay lập tức.
 
 ---
 
@@ -154,6 +163,8 @@ erDiagram
         string full_name
         int level
         int xp
+        text status "('active', 'blocked')"
+        text role "('admin', 'user')"
     }
 
     POSTS {
@@ -178,15 +189,11 @@ erDiagram
 
 *   `src/app`: Chứa các trang chính (App Router).
     *   `/`: Trang chủ (Home Feed).
-    *   `/courses`: Trang khóa học (Placeholder).
-    *   `/messages`: Tin nhắn.
+    *   `/class/[slug]`: Trang chi tiết Community Group.
+    *   `/profile/[id]`: Trang cá nhân.
 *   `src/components`: UI Components.
-    *   `/feed`: Các component liên quan Feed (PostCard, CreatePost, Feed).
-    *   `/layout`: Sidebar, Header.
-*   `src/hooks`: Custom Hooks.
-    *   `usePosts.ts`: Quản lý logic lấy bài, phân trang, gửi bài.
-    *   `useGamification.ts`: Quản lý Logic Level.
-*   `supabase/migrations`: Chứa các file SQL để khởi tạo Database.
+    *   `/feed`: PostCard (đã tích hợp Admin Actions), Feed.
+*   `supabase/migrations`: Chứa SQL migrations (mới nhất: `fix_admin_permissions.sql`).
 
 ---
 
@@ -199,6 +206,9 @@ erDiagram
 | **Đăng bài viết** | ✅ Hoàn thành | Hỗ trợ ảnh, Text |
 | **Realtime Comment** | ✅ Hoàn thành | |
 | **Duyệt bài (Admin)** | ✅ Hoàn thành | Policy bảo mật OK |
+| **Xóa bài (Admin)** | ✅ Hoàn thành | Dropdown Menu |
+| **Block User** | ✅ Hoàn thành | Ngăn user đăng nhập/tương tác |
+| **Quản lý Thành viên** | ✅ Hoàn thành | Approve/Reject/Block trong Group |
 | **Vote duyệt (User)** | ✅ Hoàn thành | Logic > 50% OK |
 | **Courses UI** | 🚧 Placeholder | Đang phát triển nội dung |
 
