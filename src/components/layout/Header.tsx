@@ -36,13 +36,6 @@ export function Header() {
                     </span>
                 </div>
 
-                {/* Center Nav */}
-                <nav className="hidden md:flex items-center gap-6">
-                    <Link href="/" className="text-foreground hover:text-primary font-medium hover:border-b-2 hover:border-primary py-1 transition-all">Community</Link>
-                    <Link href="/messages" className="text-muted-foreground hover:text-primary transition-colors py-1">Messages</Link>
-                    <Link href="#" className="text-muted-foreground hover:text-primary transition-colors py-1 cursor-not-allowed opacity-60" title="Coming Soon">Courses</Link>
-                </nav>
-
                 {/* Right Tools */}
                 <div className="flex items-center gap-2 md:gap-4">
                     {/* Search */}
