@@ -84,6 +84,10 @@ export const en = {
         welcomeBack: "Welcome back!",
         guest: "Guest",
         selectLanguage: "Select your language",
+        welcome: "Welcome Builder",
+        description: "Join the ecosystem to connect, share your work, and level up with the community.",
+        onlyGoogle: "Only Google Login Supported",
+        agreement: "By continuing, you acknowledge that you have read and agree to our Code of Conduct.",
     },
 
     // Messages

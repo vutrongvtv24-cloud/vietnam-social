@@ -86,6 +86,10 @@ export const vi: TranslationKeys = {
         welcomeBack: "Chào mừng trở lại!",
         guest: "Khách",
         selectLanguage: "Chọn ngôn ngữ của bạn",
+        welcome: "Chào mừng Builder",
+        description: "Tham gia hệ sinh thái để kết nối, chia sẻ công việc và thăng cấp cùng cộng đồng.",
+        onlyGoogle: "Chỉ hỗ trợ đăng nhập Google",
+        agreement: "Bằng việc tiếp tục, bạn đồng ý với Quy tắc ứng xử của chúng tôi.",
     },
 
     // Messages

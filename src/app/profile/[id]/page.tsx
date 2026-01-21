@@ -18,6 +18,7 @@ import { ChangeAvatarDialog } from "@/components/profile/ChangeAvatarDialog";
 import { FollowButton } from "@/components/profile/FollowButton";
 import { RankBadge } from "@/components/gamification/RankBadge";
 import { getRankByLevel } from "@/config/ranks";
+import { useLanguage } from "@/context/LanguageContext";
 
 interface ProfileBadge {
     id: string;
@@ -53,6 +54,7 @@ interface ProfileData {
 
 export default function ProfilePage() {
     const params = useParams();
+    const { t, language } = useLanguage();
     const [profile, setProfile] = useState<ProfileData | null>(null);
     const [loading, setLoading] = useState(true);
     const [userCanChangeName, setUserCanChangeName] = useState(false);
@@ -94,8 +96,8 @@ export default function ProfilePage() {
         setLoading(false);
     };
 
-    if (loading) return <div className="p-10 text-center">Loading Profile...</div>;
-    if (!profile) return <div className="p-10 text-center">User not found.</div>;
+    if (loading) return <div className="p-10 text-center">{t.common.loading}</div>;
+    if (!profile) return <div className="p-10 text-center">{t.errors.userNotFound}</div>;
 
     return (
         <div className="container max-w-4xl mx-auto py-8">
@@ -146,7 +148,7 @@ export default function ProfilePage() {
                                     </div>
                                 </h1>
                                 <p className="text-muted-foreground flex items-center justify-center md:justify-start gap-2">
-                                    Member since {new Date(profile.created_at).toLocaleDateString()}
+                                    {t.profile.memberSince} {new Date(profile.created_at).toLocaleDateString()}
                                 </p>
                             </div>
 
@@ -158,10 +160,10 @@ export default function ProfilePage() {
                                 <Badge variant="outline" className="px-3 py-1">{profile.role}</Badge>
                                 <Badge variant="outline" className="px-3 py-1 gap-1">
                                     <Users className="h-3 w-3" />
-                                    {profile.followers_count || 0} Followers
+                                    {profile.followers_count || 0} {t.profile.followers}
                                 </Badge>
                                 <Badge variant="outline" className="px-3 py-1">
-                                    {profile.following_count || 0} Following
+                                    {profile.following_count || 0} {t.profile.following}
                                 </Badge>
                             </div>
 
@@ -172,7 +174,7 @@ export default function ProfilePage() {
                                     <Link href={`/messages?userId=${profile.id}`}>
                                         <Button size="sm" variant="outline" className="gap-2">
                                             <MessageSquare className="h-3.5 w-3.5" />
-                                            Message
+                                            {t.profile.message}
                                         </Button>
                                     </Link>
                                 )}
@@ -193,18 +195,18 @@ export default function ProfilePage() {
                     <Card className="bg-gradient-to-br from-primary/10 to-primary/5 border-primary/20">
                         <CardContent className="pt-6">
                             <p className="text-sm text-center">
-                                <span className="font-semibold text-primary">💡 Mẹo:</span> Tăng Level để mở khóa thêm nhiều bài viết hay, tricks và khóa học độc quyền!
+                                {t.profile.levelTip}
                             </p>
                         </CardContent>
                     </Card>
 
                     <Card>
                         <CardHeader>
-                            <CardTitle className="text-base">Stats</CardTitle>
+                            <CardTitle className="text-base">{t.profile.stats}</CardTitle>
                         </CardHeader>
                         <CardContent className="space-y-4 text-sm">
                             <div className="flex justify-between">
-                                <span className="text-muted-foreground">Total Posts</span>
+                                <span className="text-muted-foreground">{t.profile.totalPosts}</span>
                                 <span className="font-bold">{profile.posts.length}</span>
                             </div>
                             {/* Add more stats later */}
@@ -216,8 +218,8 @@ export default function ProfilePage() {
                 <div className="md:col-span-2">
                     <Tabs defaultValue="posts">
                         <TabsList className="w-full justify-start">
-                            <TabsTrigger value="posts">Posts</TabsTrigger>
-                            <TabsTrigger value="about">About</TabsTrigger>
+                            <TabsTrigger value="posts">{t.profile.posts}</TabsTrigger>
+                            <TabsTrigger value="about">{t.profile.about}</TabsTrigger>
                         </TabsList>
                         <TabsContent value="posts" className="space-y-4 mt-6">
                             {profile.posts.length > 0 ? (
@@ -243,15 +245,15 @@ export default function ProfilePage() {
                                 ))
                             ) : (
                                 <div className="text-center py-10 text-muted-foreground bg-muted/20 rounded-lg">
-                                    No posts yet.
+                                    {t.feed.noPostsYet}
                                 </div>
                             )}
                         </TabsContent>
                         <TabsContent value="about">
                             <Card>
                                 <CardContent className="pt-6">
-                                    <h3 className="font-bold mb-2">Bio</h3>
-                                    <p className="text-sm text-muted-foreground">{profile.bio || "No bio added."}</p>
+                                    <h3 className="font-bold mb-2">{t.profile.bio}</h3>
+                                    <p className="text-sm text-muted-foreground">{profile.bio || t.profile.noBioAdded}</p>
                                 </CardContent>
                             </Card>
                         </TabsContent>
