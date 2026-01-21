@@ -19,6 +19,7 @@ import { FollowButton } from "@/components/profile/FollowButton";
 import { RankBadge } from "@/components/gamification/RankBadge";
 import { getRankByLevel } from "@/config/ranks";
 import { useLanguage } from "@/context/LanguageContext";
+import { SetLevelDialog } from "@/components/profile/SetLevelDialog";
 
 interface ProfileBadge {
     id: string;
@@ -60,6 +61,7 @@ export default function ProfilePage() {
     const [userCanChangeName, setUserCanChangeName] = useState(false);
     const [userCanChangeAvatar, setUserCanChangeAvatar] = useState(false);
     const { user: authUser } = useSupabaseAuth();
+    const isAdmin = authUser?.email === 'vutrongvtv24@gmail.com';
     const { toggleLike } = usePosts();
 
 
@@ -177,6 +179,16 @@ export default function ProfilePage() {
                                             {t.profile.message}
                                         </Button>
                                     </Link>
+                                )}
+
+                                {/* Admin Only Actions */}
+                                {isAdmin && (
+                                    <SetLevelDialog
+                                        userId={profile.id}
+                                        currentLevel={profile.level}
+                                        userName={profile.full_name}
+                                        onLevelChanged={(newLvl, newXp) => setProfile(prev => prev ? { ...prev, level: newLvl, xp: newXp } : null)}
+                                    />
                                 )}
                             </div>
 
