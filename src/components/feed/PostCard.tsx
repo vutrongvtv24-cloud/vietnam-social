@@ -18,6 +18,8 @@ import { createClient } from "@/lib/supabase/client";
 import { useSupabaseAuth } from "@/hooks/useSupabaseAuth";
 import { useLanguage } from "@/context/LanguageContext";
 import Link from "next/link";
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 import { toast } from "sonner";
 import { useGamification } from "@/context/GamificationContext";
 
@@ -57,29 +59,6 @@ export function PostCard({ post, onToggleLike, onDeletePost, onBlockUser }: Post
     const isAdmin = user?.email === 'vutrongvtv24@gmail.com';
     const { level } = useGamification();
     const { t, language } = useLanguage();
-
-    const renderContentWithLinks = (content: string) => {
-        if (!content) return null;
-        // Simple regex for URLs
-        const urlRegex = /(https?:\/\/[^\s]+)/g;
-        return content.split(urlRegex).map((part, index) => {
-            if (part.match(urlRegex)) {
-                return (
-                    <a
-                        key={index}
-                        href={part}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-primary hover:underline break-words"
-                        onClick={(e) => e.stopPropagation()}
-                    >
-                        {part}
-                    </a>
-                );
-            }
-            return part;
-        });
-    };
 
     const minLevel = post.min_level_to_view || 0;
     const isAuthor = user?.id === post.user.id;
@@ -497,9 +476,11 @@ export function PostCard({ post, onToggleLike, onDeletePost, onBlockUser }: Post
                         {post.title && (
                             <h3 className="font-bold text-lg mb-2 leading-tight">{post.title}</h3>
                         )}
-                        <p className="whitespace-pre-wrap text-sm leading-relaxed mb-3">
-                            {renderContentWithLinks(post.content)}
-                        </p>
+                        <div className="prose prose-sm dark:prose-invert max-w-none break-words mb-3">
+                            <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                                {post.content}
+                            </ReactMarkdown>
+                        </div>
                         {post.image_url && (
                             <div className="relative w-full rounded-md overflow-hidden bg-muted/20">
                                 <img
