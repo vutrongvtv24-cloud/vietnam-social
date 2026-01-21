@@ -7,13 +7,14 @@ import { Header } from "@/components/layout/Header";
 import { SidebarLeft } from "@/components/layout/SidebarLeft";
 import { SidebarRight } from "@/components/layout/SidebarRight";
 import { GamificationProvider } from "@/context/GamificationContext";
+import { LanguageProvider } from "@/context/LanguageContext";
 import { Toaster } from "@/components/ui/sonner";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Friends Zone",
-  description: "Ecosystem for Builders",
+  title: "My Room",
+  description: "Cộng đồng học tập và phát triển cùng nhau",
 };
 
 export default function RootLayout({
@@ -22,34 +23,36 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="vi" suppressHydrationWarning>
       <body className={inter.className}>
-        <GamificationProvider>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="dark"
-            enableSystem={false}
-            disableTransitionOnChange
-          >
-            <div className="min-h-screen bg-background">
-              <Header />
-              <div className="container mx-auto flex pt-20 gap-8 px-4 justify-center">
-                <aside className="hidden lg:block w-[240px] shrink-0 sticky top-24 h-[calc(100vh-6rem)] overflow-y-auto pb-8">
-                  <SidebarLeft />
-                </aside>
+        <LanguageProvider>
+          <GamificationProvider>
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="dark"
+              enableSystem={false}
+              disableTransitionOnChange
+            >
+              <div className="min-h-screen bg-background">
+                <Header />
+                <div className="container mx-auto flex pt-20 gap-8 px-4 justify-center">
+                  <aside className="hidden lg:block w-[240px] shrink-0 sticky top-24 h-[calc(100vh-6rem)] overflow-y-auto pb-8">
+                    <SidebarLeft />
+                  </aside>
 
-                <main className="flex-1 max-w-2xl min-w-0 pb-10">
-                  {children}
-                </main>
+                  <main className="flex-1 max-w-2xl min-w-0 pb-10">
+                    {children}
+                  </main>
 
-                <aside className="hidden xl:block w-[320px] shrink-0 sticky top-24 h-[calc(100vh-6rem)] overflow-y-auto pb-8">
-                  <SidebarRight />
-                </aside>
+                  <aside className="hidden xl:block w-[320px] shrink-0 sticky top-24 h-[calc(100vh-6rem)] overflow-y-auto pb-8">
+                    <SidebarRight />
+                  </aside>
+                </div>
+                <Toaster />
               </div>
-              <Toaster />
-            </div>
-          </ThemeProvider>
-        </GamificationProvider>
+            </ThemeProvider>
+          </GamificationProvider>
+        </LanguageProvider>
       </body>
     </html>
   );

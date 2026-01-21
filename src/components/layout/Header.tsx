@@ -1,15 +1,18 @@
 "use client";
 
-import { Search, Bell, Menu, LogIn, LogOut } from "lucide-react";
+import { Search, Bell, Menu, LogIn, LogOut, Settings } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
 import { useSupabaseAuth } from "@/hooks/useSupabaseAuth";
 import { useNotifications } from "@/hooks/useNotifications";
+import { useLanguage } from "@/context/LanguageContext";
+import { LanguageSelector } from "@/components/i18n/LanguageSelector";
 import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
+    DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import {
@@ -22,18 +25,27 @@ import Link from "next/link";
 export function Header() {
     const { user, signInWithGoogle, signOut } = useSupabaseAuth();
     const { notifications, unreadCount, markAsRead } = useNotifications();
+    const { t } = useLanguage();
 
     return (
         <header className="fixed top-0 left-0 right-0 z-50 border-b bg-background/80 backdrop-blur-sm">
             <div className="container mx-auto px-4 h-16 flex items-center justify-between gap-4">
-                {/* Logo */}
+                {/* Logo with Glow Effect */}
                 <div className="flex items-center gap-2">
                     <Button variant="ghost" size="icon" className="lg:hidden">
                         <Menu className="h-5 w-5" />
                     </Button>
-                    <span className="font-bold text-xl tracking-tight hidden sm:block">
-                        FRIENDS ZONE
-                    </span>
+                    <Link href="/" className="group">
+                        <span className="font-bold text-xl tracking-tight hidden sm:block relative">
+                            <span className="relative z-10 bg-gradient-to-r from-primary via-purple-500 to-pink-500 bg-clip-text text-transparent">
+                                MY ROOM
+                            </span>
+                            {/* Glow effect */}
+                            <span className="absolute inset-0 blur-lg bg-gradient-to-r from-primary/50 via-purple-500/50 to-pink-500/50 opacity-0 group-hover:opacity-70 transition-opacity duration-300" aria-hidden="true">
+                                MY ROOM
+                            </span>
+                        </span>
+                    </Link>
                 </div>
 
                 {/* Right Tools */}
@@ -54,7 +66,7 @@ export function Header() {
                             </Button>
                         </PopoverTrigger>
                         <PopoverContent align="end" className="w-80 p-0">
-                            <div className="p-4 border-b font-semibold text-sm">Notifications</div>
+                            <div className="p-4 border-b font-semibold text-sm">{t.messages.title}</div>
                             <div className="max-h-[300px] overflow-y-auto">
                                 {notifications.length > 0 ? (
                                     notifications.map((n) => (
@@ -73,11 +85,14 @@ export function Header() {
                                         </div>
                                     ))
                                 ) : (
-                                    <div className="p-4 text-center text-sm text-muted-foreground">No notifications</div>
+                                    <div className="p-4 text-center text-sm text-muted-foreground">{t.messages.noMessages}</div>
                                 )}
                             </div>
                         </PopoverContent>
                     </Popover>
+
+                    {/* Language Selector */}
+                    <LanguageSelector variant="icon" size="sm" />
 
                     {user ? (
                         <DropdownMenu>
@@ -90,12 +105,13 @@ export function Header() {
                             <DropdownMenuContent align="end">
                                 <DropdownMenuItem asChild>
                                     <Link href={`/profile/${user.id}`} className="cursor-pointer">
-                                        User Profile
+                                        {t.profile.editProfile.replace('Edit ', '')}
                                     </Link>
                                 </DropdownMenuItem>
+                                <DropdownMenuSeparator />
                                 <DropdownMenuItem onClick={() => signOut()}>
                                     <LogOut className="mr-2 h-4 w-4" />
-                                    Logout
+                                    {t.auth.signOut}
                                 </DropdownMenuItem>
                             </DropdownMenuContent>
                         </DropdownMenu>
@@ -103,13 +119,13 @@ export function Header() {
                         <Button asChild className="gap-2">
                             <Link href="/auth" className="flex items-center gap-2">
                                 <LogIn className="h-4 w-4" />
-                                Sign In
+                                {t.auth.signInWithGoogle.replace(' with Google', '')}
                             </Link>
                         </Button>
                     )}
                 </div>
             </div>
-        </header >
+        </header>
     )
 }
 

@@ -5,10 +5,12 @@ import { Lock, Home, Hash, MessageCircle, BookOpen, CheckSquare, NotebookPen, Us
 import { RPG_CLASSES, SPACES } from "@/data/mock";
 import Link from "next/link";
 import { useGamification } from "@/context/GamificationContext";
+import { useLanguage } from "@/context/LanguageContext";
 import { usePathname } from "next/navigation";
 
 export function SidebarLeft() {
     const { level } = useGamification();
+    const { t } = useLanguage();
     const pathname = usePathname();
 
     const isActive = (path: string) => pathname === path;
@@ -23,7 +25,7 @@ export function SidebarLeft() {
                 >
                     <Link href="/">
                         <Users className="mr-2 h-4 w-4" />
-                        Community
+                        {t.nav.community}
                     </Link>
                 </Button>
                 <Button
@@ -33,7 +35,7 @@ export function SidebarLeft() {
                 >
                     <Link href="/journal">
                         <NotebookPen className="mr-2 h-4 w-4" />
-                        My Journal
+                        {t.nav.myJournal}
                     </Link>
                 </Button>
                 <Button
@@ -43,7 +45,7 @@ export function SidebarLeft() {
                 >
                     <Link href="/todos">
                         <CheckSquare className="mr-2 h-4 w-4" />
-                        Todo List
+                        {t.nav.todoList}
                     </Link>
                 </Button>
                 <Button
@@ -53,7 +55,7 @@ export function SidebarLeft() {
                 >
                     <Link href="/messages">
                         <MessageCircle className="mr-2 h-4 w-4" />
-                        Messages
+                        {t.nav.messages}
                     </Link>
                 </Button>
             </div>
@@ -66,14 +68,14 @@ export function SidebarLeft() {
                 >
                     <Link href="/courses">
                         <BookOpen className="mr-2 h-4 w-4" />
-                        Courses
+                        {t.nav.courses}
                     </Link>
                 </Button>
             </div>
 
             <div className="pt-4">
                 <h3 className="mb-2 px-4 text-xs font-semibold tracking-tight text-muted-foreground">
-                    Community
+                    {t.nav.community}
                 </h3>
                 <div className="space-y-1">
                     <Button

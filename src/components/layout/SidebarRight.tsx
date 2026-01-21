@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useGamification } from "@/context/GamificationContext";
+import { useLanguage } from "@/context/LanguageContext";
 import { useSupabaseAuth } from "@/hooks/useSupabaseAuth";
 import { useLeaderboard } from "@/hooks/useLeaderboard";
 import Link from "next/link";
@@ -16,6 +17,7 @@ import { toast } from "sonner";
 
 export function SidebarRight() {
     const { level, xp, badges, xpToNextLevel, profileName, avatarUrl, performDailyCheckin, hasCheckedInToday, imagePostLimit } = useGamification();
+    const { t, language } = useLanguage();
     const { user: authUser } = useSupabaseAuth();
     const { leaders, loading: loadingLeaderboard } = useLeaderboard();
     const [isCheckingIn, setIsCheckingIn] = useState(false);
@@ -46,7 +48,7 @@ export function SidebarRight() {
         <div className="space-y-6">
             <Card className="border-none shadow-none bg-transparent sm:bg-card sm:border sm:shadow-sm">
                 <CardHeader className="pb-2 pt-4 px-0 sm:px-6">
-                    <CardTitle className="text-sm font-medium text-muted-foreground uppercase tracking-wider">Your Progress</CardTitle>
+                    <CardTitle className="text-sm font-medium text-muted-foreground uppercase tracking-wider">{t.sidebar.yourProgress}</CardTitle>
                 </CardHeader>
                 <CardContent className="px-0 sm:px-6">
                     <div className="flex items-center gap-4 mb-4">
@@ -67,7 +69,7 @@ export function SidebarRight() {
                     <div className="space-y-1.5">
                         <div className="flex justify-between text-xs font-medium">
                             <span className="flex items-center gap-1">
-                                <span className="text-primary">⚡</span> XP Progress
+                                <span className="text-primary">⚡</span> {t.sidebar.xpProgress}
                             </span>
                             <span className="text-muted-foreground font-mono">
                                 {Math.round(xp)}<span className="opacity-50">/{xpToNextLevel}</span>
@@ -82,7 +84,10 @@ export function SidebarRight() {
                             </div>
                         </div>
                         <p className="text-[10px] text-muted-foreground text-center">
-                            {level < 5 ? `${xpToNextLevel} XP đến Level ${level + 1}` : '🏆 Đã đạt cấp cao nhất!'}
+                            {level < 5
+                                ? t.sidebar.xpToLevel.replace('{xp}', String(xpToNextLevel)).replace('{level}', String(level + 1))
+                                : t.sidebar.maxLevel
+                            }
                         </p>
                     </div>
 
@@ -97,13 +102,13 @@ export function SidebarRight() {
                                 size="sm"
                             >
                                 <CalendarCheck className="h-4 w-4" />
-                                {hasCheckedInToday ? '✓ Đã điểm danh hôm nay' : 'Điểm danh (+3 XP)'}
+                                {hasCheckedInToday ? t.sidebar.alreadyCheckedIn : t.sidebar.dailyCheckin}
                             </Button>
 
                             {/* Image Limit Info */}
                             <div className="flex items-center justify-center gap-1 text-[10px] text-muted-foreground">
                                 <ImageIcon className="h-3 w-3" />
-                                <span>Giới hạn ảnh: {imagePostLimit.description}</span>
+                                <span>{t.sidebar.imageLimit.replace('{description}', imagePostLimit.description)}</span>
                             </div>
                         </div>
                     )}
@@ -112,11 +117,11 @@ export function SidebarRight() {
 
             <Card className="hidden xl:block">
                 <CardHeader>
-                    <CardTitle className="text-sm font-bold">Leaderboard</CardTitle>
+                    <CardTitle className="text-sm font-bold">{t.sidebar.leaderboard}</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                     {loadingLeaderboard ? (
-                        <div className="text-xs text-muted-foreground text-center">Loading rankings...</div>
+                        <div className="text-xs text-muted-foreground text-center">{t.common.loading}</div>
                     ) : leaders.length > 0 ? (
                         leaders.map((leader, i) => (
                             <div
