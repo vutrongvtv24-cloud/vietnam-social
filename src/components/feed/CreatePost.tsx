@@ -25,7 +25,7 @@ import EmojiPicker, { Theme, EmojiClickData } from 'emoji-picker-react';
 import { useTheme } from "next-themes";
 
 interface CreatePostProps {
-    onPost: (content: string, image?: File, title?: string, minLevel?: number, topic?: string) => Promise<void>;
+    onPost: (content: string, image?: File, title?: string, minLevel?: number, topic?: string, visibility?: 'public' | 'private') => Promise<void>;
     user: {
         avatar?: string;
         name: string;
@@ -46,6 +46,7 @@ export function CreatePost({ onPost, user, placeholder, disabled = false, maxLev
     const [title, setTitle] = useState("");
     const [minLevel, setMinLevel] = useState(0);
     const [topic, setTopic] = useState("share");
+    const [visibility, setVisibility] = useState<'public' | 'private'>('public');
     const [isPosting, setIsPosting] = useState(false);
     const [selectedImage, setSelectedImage] = useState<File | null>(null);
     const [imagePreview, setImagePreview] = useState<string | null>(null);
@@ -85,6 +86,7 @@ export function CreatePost({ onPost, user, placeholder, disabled = false, maxLev
         setTitle("");
         setMinLevel(0);
         setTopic("share");
+        setVisibility("public");
         clearImage();
     };
 
@@ -93,7 +95,7 @@ export function CreatePost({ onPost, user, placeholder, disabled = false, maxLev
 
         try {
             setIsPosting(true);
-            await onPost(content, selectedImage || undefined, title, minLevel, topic);
+            await onPost(content, selectedImage || undefined, title, minLevel, topic, visibility);
             resetForm();
             setIsOpen(false);
         } finally {
@@ -137,18 +139,6 @@ export function CreatePost({ onPost, user, placeholder, disabled = false, maxLev
                                     <ImageIcon className="h-5 w-5 text-green-500" />
                                     <span className="text-xs sm:text-sm font-medium">{language === 'vi' ? 'Ảnh/Video' : 'Photo/Video'}</span>
                                 </Button>
-                                <Button variant="ghost" className="flex-1 gap-2 text-muted-foreground hover:bg-transparent hover:text-foreground">
-                                    <Video className="h-5 w-5 text-red-500" />
-                                    <span className="text-xs sm:text-sm font-medium">Live Video</span>
-                                </Button>
-                                <Button
-                                    variant="ghost"
-                                    className="flex-1 gap-2 text-muted-foreground hover:bg-transparent hover:text-foreground"
-                                    onClick={(e) => { e.stopPropagation(); setIsOpen(true); }}
-                                >
-                                    <Smile className="h-5 w-5 text-yellow-500" />
-                                    <span className="text-xs sm:text-sm font-medium">{language === 'vi' ? 'Cảm xúc' : 'Feeling'}</span>
-                                </Button>
                             </div>
                         </CardContent>
                     </Card>
@@ -171,10 +161,15 @@ export function CreatePost({ onPost, user, placeholder, disabled = false, maxLev
                             </Avatar>
                             <div>
                                 <div className="font-semibold text-sm">{user.name}</div>
-                                <Button variant="secondary" size="sm" className="h-6 text-[10px] px-2 mt-0.5 font-normal bg-muted">
-                                    <Globe className="h-3 w-3 mr-1" />
-                                    Public
-                                </Button>
+                                <select
+                                    value={visibility}
+                                    onChange={(e) => setVisibility(e.target.value as 'public' | 'private')}
+                                    className="mt-1 h-6 text-[10px] px-2 rounded bg-muted border-none focus:outline-none focus:ring-1 focus:ring-primary cursor-pointer"
+                                    title={language === 'vi' ? 'Chế độ hiển thị' : 'Visibility'}
+                                >
+                                    <option value="public">🌐 Public</option>
+                                    <option value="private">🔒 Private</option>
+                                </select>
                             </div>
                         </div>
 

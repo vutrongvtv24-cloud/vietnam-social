@@ -32,9 +32,9 @@ export function Feed({ communityId }: FeedProps) {
         }
     }, [inView, hasMore, loadMore]);
 
-    const handlePost = async (content: string, image?: File, title?: string, minLevel?: number, topic?: string) => {
+    const handlePost = async (content: string, image?: File, title?: string, minLevel?: number, topic?: string, visibility?: 'public' | 'private') => {
         try {
-            await createPost(content, image, title, minLevel, topic);
+            await createPost(content, image, title, minLevel, topic, visibility);
             toast.success("Post created! 📝");
         } catch (error) {
             console.error("Failed to post:", error);

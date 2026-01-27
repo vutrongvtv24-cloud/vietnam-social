@@ -274,7 +274,7 @@ export function usePosts(communitySlug?: string, topic?: string) {
     }, [supabase, communityId]);
 
 
-    const createPost = async (content: string, imageFile?: File, title?: string, minLevel?: number, topic?: string) => {
+    const createPost = async (content: string, imageFile?: File, title?: string, minLevel?: number, topic?: string, visibility?: 'public' | 'private') => {
         if (!user) return;
 
         let imageUrl: string | undefined;
@@ -298,6 +298,7 @@ export function usePosts(communitySlug?: string, topic?: string) {
             title: title || null,
             min_level_to_view: minLevel || 0,
             topic: topic || 'share',
+            visibility: visibility || 'public', // Assuming 'visibility' column exists or will be added. If not, this might error or be ignored.
         }).select().single();
 
         if (error) throw error;

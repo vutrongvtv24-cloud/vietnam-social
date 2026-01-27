@@ -72,6 +72,7 @@ export interface Database {
                     created_at: string
                     updated_at: string
                     topic: string
+                    visibility: string
                 }
                 Insert: {
                     id?: string
@@ -87,6 +88,7 @@ export interface Database {
                     created_at?: string
                     updated_at?: string
                     topic?: string
+                    visibility?: string
                 }
                 Update: {
                     id?: string
@@ -102,6 +104,7 @@ export interface Database {
                     created_at?: string
                     updated_at?: string
                     topic?: string
+                    visibility?: string
                 }
             }
             communities: {
