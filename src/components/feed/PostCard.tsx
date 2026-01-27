@@ -403,7 +403,7 @@ export function PostCard({ post, onToggleLike, onDeletePost, onBlockUser }: Post
                         <Link href={`/profile/${post.user.id}`} className="font-semibold text-sm flex items-center gap-2 hover:underline cursor-pointer">
                             {post.user.name}
                             {post.user.title && (
-                                <span className="text-[10px] bg-secondary px-1.5 py-0.5 rounded text-muted-foreground font-normal no-underline">
+                                <span className="text-[10px] bg-secondary px-1.5 py-0.5 rounded text-secondary-foreground font-semibold no-underline shadow-sm">
                                     {post.user.title}
                                 </span>
                             )}
