@@ -1,45 +1,76 @@
 {
-    "updated_at": "2026-01-27T11:05:00+07:00",
+    "updated_at": "2026-01-27T12:08:00+07:00",
     "working_on": {
-        "feature": "Project Maintenance",
-        "task": "Context Recovery & Documentation",
-        "status": "documenting",
+        "feature": "Community Feed Refactor",
+        "task": "Cleanup & Documentation",
+        "status": "complete",
         "files": [
-            ".brain/brain.json",
-            "docs/architecture/system_overview.md"
+            "src/components/feed/Feed.tsx",
+            "src/components/feed/CreatePost.tsx",
+            "src/components/layout/SidebarLeft.tsx",
+            "src/components/layout/SidebarRight.tsx",
+            "supabase/migrations/20260127_add_topic_to_posts.sql",
+            "src/app/globals.css"
         ],
-        "notes": "Initializing Antigravity workflow memory."
+        "notes": "Added topic filtering (Youtube/MMO/Share). Implemented Deep Glass Theme. Fixed accessibility issues on badges."
     },
     "pending_tasks": [
         {
-            "task": "Complete Classroom/Courses Feature",
-            "priority": "high",
-            "notes": "Phase 4 of Implementation Plan"
+            "task": "Deploy Database Migration to Production",
+            "priority": "critical",
+            "notes": "Run 20260127_add_topic_to_posts.sql on Supabase Dashboard"
         },
         {
-            "task": "Refine Gamification (Badges/Ranks)",
-            "priority": "medium",
-            "notes": "Ensure visual consistency"
+            "task": "Refine Classroom/Courses Feature",
+            "priority": "high",
+            "notes": "Next phase"
         }
     ],
     "recent_changes": [
         {
-            "timestamp": "2026-01-27T11:00:00+07:00",
-            "type": "docs",
-            "description": "Added VPS Deployment Documentation",
+            "timestamp": "2026-01-27T12:00:00+07:00",
+            "type": "ui",
+            "description": "Fixed text contrast on Rank Badges (White text on Dark bg)",
             "files": [
-                "deployment_docs.md"
+                "src/components/layout/SidebarRight.tsx"
             ]
         },
         {
-            "timestamp": "2026-01-27T10:00:00+07:00",
-            "type": "feature",
-            "description": "Added Pomodoro Timer",
+            "timestamp": "2026-01-27T11:45:00+07:00",
+            "type": "ui",
+            "description": "Implemented Deep Glass Theme & Feed Filter Pills",
             "files": [
-                "src/app/todos/pomodoro.tsx"
+                "src/app/globals.css",
+                "src/components/feed/Feed.tsx"
+            ]
+        },
+        {
+            "timestamp": "2026-01-27T11:30:00+07:00",
+            "type": "feature",
+            "description": "Added Topic Selection & Filtering to Community Feed",
+            "files": [
+                "src/hooks/usePosts.ts",
+                "src/components/feed/CreatePost.tsx"
+            ]
+        },
+        {
+            "timestamp": "2026-01-27T11:00:00+07:00",
+            "type": "database",
+            "description": "Added 'topic' column to posts table",
+            "files": [
+                "supabase/migrations/20260127_add_topic_to_posts.sql"
             ]
         }
     ],
     "errors_encountered": [],
-    "decisions_made": []
+    "decisions_made": [
+        {
+            "decision": "Use Pills for Feed Filtering",
+            "reason": "Cleaner UI, easy to switch topics"
+        },
+        {
+            "decision": "Deep Glass Theme",
+            "reason": "Modern aesthetic requested by user"
+        }
+    ]
 }

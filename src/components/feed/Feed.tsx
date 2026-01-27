@@ -80,8 +80,8 @@ export function Feed({ communityId }: FeedProps) {
                         key={t.id}
                         onClick={() => setSelectedTopic(t.id)}
                         className={`px-6 py-2 rounded-full text-sm font-medium transition-all duration-200 transform ${selectedTopic === t.id
-                                ? 'bg-primary text-primary-foreground shadow-lg shadow-primary/25 scale-105'
-                                : 'bg-card hover:bg-muted border border-border text-muted-foreground hover:-translate-y-0.5'
+                            ? 'bg-primary text-primary-foreground shadow-lg shadow-primary/25 scale-105'
+                            : 'bg-card hover:bg-muted hover:text-foreground border border-border text-muted-foreground hover:-translate-y-0.5'
                             }`}
                     >
                         {t.label}

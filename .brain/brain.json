@@ -36,7 +36,7 @@
             "notifications.sql (System)",
             "xp_system.sql (Gamification Logic)"
         ],
-        "relationships_explained": "Users have Profiles. Users can Follow each other. Posts can be Liked/Commented. Users earn XP and Badges."
+        "relationships_explained": "Users have Profiles. Users can Follow each other. Posts can be Liked/Commented. Users earn XP and Badges. Posts have 'topic' category."
     },
     "features": [
         {
@@ -52,7 +52,12 @@
         {
             "name": "Community",
             "status": "Active",
-            "description": "Newsfeed, Posts, Likes, Comments"
+            "description": "Newsfeed, Posts, Likes, Comments, Topic Filtering (Youtube/MMO/Share)"
+        },
+        {
+            "name": "UI/UX",
+            "status": "Implemented",
+            "description": "Deep Glass Theme (Dark Mode Optimized), Rank Badges, Pill Filters"
         },
         {
             "name": "Classroom",

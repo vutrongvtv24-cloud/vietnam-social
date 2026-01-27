@@ -19,54 +19,54 @@ export function SidebarLeft() {
         <div className="space-y-6 pb-4">
             <div className="space-y-1">
                 <Button
-                    variant={isActive("/") ? "secondary" : "ghost"}
+                    variant="ghost"
                     className={`w-full justify-start font-medium transition-all duration-200 ${isActive("/")
-                            ? "bg-primary/10 text-primary border-l-2 border-primary rounded-none rounded-r-lg"
-                            : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
+                        ? "bg-primary/20 text-primary-foreground border-l-4 border-primary rounded-r-full"
+                        : "text-muted-foreground hover:text-foreground hover:bg-white/10"
                         }`}
                     asChild
                 >
                     <Link href="/">
-                        <Users className={`mr-2 h-4 w-4 ${isActive("/") ? "text-primary" : "text-muted-foreground"}`} />
+                        <Users className={`mr-2 h-4 w-4 ${isActive("/") ? "text-primary-foreground" : "text-muted-foreground group-hover:text-foreground"}`} />
                         {t.nav.community}
                     </Link>
                 </Button>
                 <Button
-                    variant={isActive("/journal") ? "secondary" : "ghost"}
+                    variant="ghost"
                     className={`w-full justify-start font-medium transition-all duration-200 ${isActive("/journal")
-                            ? "bg-primary/10 text-primary border-l-2 border-primary rounded-none rounded-r-lg"
-                            : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
+                        ? "bg-primary/20 text-primary-foreground border-l-4 border-primary rounded-r-full"
+                        : "text-muted-foreground hover:text-foreground hover:bg-white/10"
                         }`}
                     asChild
                 >
                     <Link href="/journal">
-                        <NotebookPen className={`mr-2 h-4 w-4 ${isActive("/journal") ? "text-primary" : "text-muted-foreground"}`} />
+                        <NotebookPen className={`mr-2 h-4 w-4 ${isActive("/journal") ? "text-primary-foreground" : "text-muted-foreground group-hover:text-foreground"}`} />
                         {t.nav.myJournal}
                     </Link>
                 </Button>
                 <Button
-                    variant={isActive("/todos") ? "secondary" : "ghost"}
+                    variant="ghost"
                     className={`w-full justify-start font-medium transition-all duration-200 ${isActive("/todos")
-                            ? "bg-primary/10 text-primary border-l-2 border-primary rounded-none rounded-r-lg"
-                            : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
+                        ? "bg-primary/20 text-primary-foreground border-l-4 border-primary rounded-r-full"
+                        : "text-muted-foreground hover:text-foreground hover:bg-white/10"
                         }`}
                     asChild
                 >
                     <Link href="/todos">
-                        <CheckSquare className={`mr-2 h-4 w-4 ${isActive("/todos") ? "text-primary" : "text-muted-foreground"}`} />
+                        <CheckSquare className={`mr-2 h-4 w-4 ${isActive("/todos") ? "text-primary-foreground" : "text-muted-foreground group-hover:text-foreground"}`} />
                         {t.nav.todoList}
                     </Link>
                 </Button>
                 <Button
-                    variant={isActive("/messages") ? "secondary" : "ghost"}
+                    variant="ghost"
                     className={`w-full justify-start font-medium transition-all duration-200 ${isActive("/messages")
-                            ? "bg-primary/10 text-primary border-l-2 border-primary rounded-none rounded-r-lg"
-                            : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
+                        ? "bg-primary/20 text-primary-foreground border-l-4 border-primary rounded-r-full"
+                        : "text-muted-foreground hover:text-foreground hover:bg-white/10"
                         }`}
                     asChild
                 >
                     <Link href="/messages">
-                        <MessageCircle className={`mr-2 h-4 w-4 ${isActive("/messages") ? "text-primary" : "text-muted-foreground"}`} />
+                        <MessageCircle className={`mr-2 h-4 w-4 ${isActive("/messages") ? "text-primary-foreground" : "text-muted-foreground group-hover:text-foreground"}`} />
                         {t.nav.messages}
                     </Link>
                 </Button>
@@ -74,15 +74,15 @@ export function SidebarLeft() {
 
             <div>
                 <Button
-                    variant={isActive("/courses") ? "secondary" : "ghost"}
+                    variant="ghost"
                     className={`w-full justify-start font-medium transition-all duration-200 ${isActive("/courses")
-                            ? "bg-primary/10 text-primary border-l-2 border-primary rounded-none rounded-r-lg"
-                            : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
+                        ? "bg-primary/20 text-primary-foreground border-l-4 border-primary rounded-r-full"
+                        : "text-muted-foreground hover:text-foreground hover:bg-white/10"
                         }`}
                     asChild
                 >
                     <Link href="/courses">
-                        <BookOpen className={`mr-2 h-4 w-4 ${isActive("/courses") ? "text-primary" : "text-muted-foreground"}`} />
+                        <BookOpen className={`mr-2 h-4 w-4 ${isActive("/courses") ? "text-primary-foreground" : "text-muted-foreground group-hover:text-foreground"}`} />
                         {t.nav.courses}
                     </Link>
                 </Button>
